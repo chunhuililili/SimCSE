@@ -25,12 +25,12 @@ else:
     maxlen = 64
 
 # 加载数据集
-data_path = '/root/senteval_cn/'
+data_path = './data/'
 
 datasets = {
     '%s-%s' % (task_name, f):
-    load_data('%s%s/%s.%s.data' % (data_path, task_name, task_name, f))
-    for f in ['train', 'valid', 'test']
+    load_data('%s%s_%s.tsv' % (data_path, task_name.lower(), f))
+    for f in ['train', 'dev', 'test']
 }
 
 # bert配置
@@ -38,7 +38,8 @@ model_name = {
     'BERT': 'chinese_L-12_H-768_A-12',
     'RoBERTa': 'chinese_roberta_wwm_ext_L-12_H-768_A-12',
     'WoBERT': 'chinese_wobert_plus_L-12_H-768_A-12',
-    'NEZHA': 'nezha_base_wwm',
+    #'NEZHA': 'nezha_base_wwm',
+    'NEZHA': 'NEZHA',
     'RoFormer': 'chinese_roformer_L-12_H-768_A-12',
     'BERT-large': 'uer/mixed_corpus_bert_large_model',
     'RoBERTa-large': 'chinese_roberta_wwm_large_ext_L-24_H-1024_A-16',
@@ -48,14 +49,15 @@ model_name = {
     'SimBERT-small': 'chinese_simbert_L-6_H-384_A-12'
 }[model_type]
 
-config_path = '/root/kg/bert/%s/bert_config.json' % model_name
+print('model_name={}'.format(model_name))
+config_path = './init_checkpoint/%s-Base/bert_config.json' % model_name
 if model_type == 'NEZHA':
-    checkpoint_path = '/root/kg/bert/%s/model.ckpt-691689' % model_name
+    checkpoint_path = './init_checkpoint/%s-Base/model.ckpt-900000' % model_name
 elif model_type == 'NEZHA-large':
     checkpoint_path = '/root/kg/bert/%s/model.ckpt-346400' % model_name
 else:
     checkpoint_path = '/root/kg/bert/%s/bert_model.ckpt' % model_name
-dict_path = '/root/kg/bert/%s/vocab.txt' % model_name
+dict_path = './init_checkpoint/%s-Base/vocab.txt' % model_name
 
 # 建立分词器
 if model_type in ['WoBERT', 'RoFormer']:

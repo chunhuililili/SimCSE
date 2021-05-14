@@ -20,8 +20,8 @@ def load_data(filename):
     with open(filename, encoding='utf-8') as f:
         for l in f:
             l = l.strip().split('\t')
-            if len(l) == 3:
-                D.append((l[0], l[1], float(l[2])))
+            if len(l) == 4:
+                D.append((l[2], l[3], float(l[1])))
     return D
 
 
@@ -97,6 +97,7 @@ def convert_to_ids(data, tokenizer, maxlen=64):
         token_ids = tokenizer.encode(d[1], maxlen=maxlen)[0]
         b_token_ids.append(token_ids)
         labels.append(d[2])
+    print('a_token_ids.len={}'.format(len(a_token_ids)))
     a_token_ids = sequence_padding(a_token_ids)
     b_token_ids = sequence_padding(b_token_ids)
     return a_token_ids, b_token_ids, labels
